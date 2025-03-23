@@ -1,0 +1,86 @@
+generator client {
+  provider = "prisma-client-js"
+}
+
+generator json {
+  provider = "prisma-json-types-generator"
+}
+
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+model User {
+  id        String   @id @default(uuid())
+  createdAt DateTime @default(now())
+  email     String   @unique
+  name      String?
+
+  password String
+}
+
+model Banner {
+  id        String   @id @default(uuid())
+  createdAt DateTime @default(now())
+
+  position    Int    @default(1)
+  image       String
+  ///[TextWithLangs]
+  title       Json
+  ///[TextWithLangs]
+  description Json
+  href        String
+  ///[TextWithLangs]
+  button      Json
+  ///[ImageSide]
+  imageSide   Json
+}
+
+model Category {
+  id        String   @id @default(uuid())
+  createdAt DateTime @default(now())
+
+  ///[TextWithLangs]
+  title  Json
+  hrefId String
+
+  products Product[]
+}
+
+model Product {
+  id        String   @id @default(uuid())
+  createdAt DateTime @default(now())
+
+  ///[TextWithLangs]
+  name        Json
+  ///[TextWithLangs]
+  description Json
+  ///[MinMaxValue]
+  price       Json
+  image       String
+
+  categoryId String
+  category   Category @relation(fields: [categoryId], references: [id])
+
+  composition String[]
+  ///[MinMaxValue]
+  volumes     Json
+  ///[Nutrition]
+  nutrition   Json
+}
+
+model Event {
+  id        String   @id @default(uuid())
+  createdAt DateTime @default(now())
+
+  ///[TextWithLangs]
+  name         Json
+  date         DateTime
+  ///[TextWithLangs]
+  description  Json
+  imagePreview String
+  image        String
+  ///[EventContent]
+  content      Json
+}

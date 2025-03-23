@@ -1,0 +1,16 @@
+services:
+  db:
+    image: postgres:latest
+    restart: always
+    shm_size: 128mb
+    environment:
+      POSTGRES_USER: admin
+      POSTGRES_PASSWORD: kapassword
+      POSTGRES_DB: kras-alert-db
+    ports:
+      - '5432:5432'
+    volumes:
+      - db_data:/var/lib/postgresql/newdata
+
+volumes:
+  db_data:
