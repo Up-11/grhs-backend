@@ -20,6 +20,7 @@
 		"test:e2e": "jest --config ./test/jest-e2e.json"
 	},
 	"dependencies": {
+		"@nestjs-modules/mailer": "^2.0.2",
 		"@nestjs/common": "^10.0.0",
 		"@nestjs/config": "^4.0.1",
 		"@nestjs/core": "^10.0.0",
@@ -28,6 +29,10 @@
 		"@nestjs/passport": "^11.0.5",
 		"@nestjs/platform-express": "^10.0.0",
 		"@prisma/client": "^6.5.0",
+		"@react-email/components": "0.0.34",
+		"@react-email/html": "0.0.11",
+		"@react-email/render": "^1.0.5",
+		"@react-email/tailwind": "1.0.4",
 		"bcryptjs": "^3.0.2",
 		"class-transformer": "^0.5.1",
 		"class-validator": "^0.14.1",
@@ -35,18 +40,23 @@
 		"passport-jwt": "^4.0.1",
 		"prisma": "^6.5.0",
 		"prisma-json-types-generator": "^3.2.2",
+		"react": "19.0.0",
+		"react-dom": "^19.0.0",
 		"reflect-metadata": "^0.2.0",
-		"rxjs": "^7.8.1"
+		"rxjs": "^7.8.1",
+		"uuid": "^11.1.0"
 	},
 	"devDependencies": {
 		"@nestjs/cli": "^10.0.0",
 		"@nestjs/schematics": "^10.0.0",
+		"@nestjs/serve-static": "^5.0.3",
 		"@nestjs/testing": "^10.0.0",
 		"@trivago/prettier-plugin-sort-imports": "^5.2.2",
 		"@types/express": "^5.0.0",
 		"@types/jest": "^29.5.2",
 		"@types/node": "^20.3.1",
 		"@types/passport-jwt": "^4.0.1",
+		"@types/react": "^19.0.12",
 		"@types/supertest": "^6.0.0",
 		"@typescript-eslint/eslint-plugin": "^8.0.0",
 		"@typescript-eslint/parser": "^8.0.0",

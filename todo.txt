@@ -1,31 +1,17 @@
-[x] - db tables
-
-USER ----------------------
-[x] - auth 
-[] - notification service
-  [] - find users to send notification
-  [] - push on android
-[] - events 
-  [] - get events with searchQuery and filters  
-  [] - old events  
-  [] - rating??????  
-[] - feedback 
-  [] - send feedback 
-
-ADMIN ----------------------
-[] - notification service
-  [] - send notification
-[] - feedback 
-  [] - check feedback
-[] - companies 
-  [] - get all companies
-[] - events 
-  [] - create Event
-  [] - update Event with notifications
-  [] - delete Event
-  [] - draft Event
+[] - products
+    [] - crud 
+  [] - crud 
+  [] - crud 
+  [] - crud 
   
-EXTRA -------------------------
-[] - parsing excel
-
+[] - event 
+  [] - crud 
+[] - main page blocks 
+  [x] - create block 
+  [x] - delete block 
+  [] - hide?? block 
+  [] - update position 
+  [x] - update info 
+  
+[] - media service
 

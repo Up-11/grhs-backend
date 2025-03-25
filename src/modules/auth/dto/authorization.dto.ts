@@ -1,11 +1,4 @@
-import { Role } from '@prisma/client'
-import {
-	IsEmail,
-	IsEnum,
-	IsOptional,
-	IsString,
-	MinLength
-} from 'class-validator'
+import { IsEmail, IsString, MinLength } from 'class-validator'
 
 export class RegisterDto {
 	@IsEmail()
@@ -22,10 +15,6 @@ export class RegisterDto {
 		message: 'Имя должно быть не меньше 2 символов'
 	})
 	name: string
-
-	@IsEnum(Role)
-	@IsOptional()
-	role: Role
 }
 
 export class LoginDto {

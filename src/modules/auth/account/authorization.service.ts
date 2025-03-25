@@ -7,26 +7,35 @@ import { JwtService } from '@nestjs/jwt'
 import { User } from '@prisma/client'
 import { compare, genSalt, hash } from 'bcryptjs'
 import { DatabaseService } from 'src/core/database/database.service'
+import { issueAccessToken } from 'src/shared/utils/issue-access-token.util'
 
-import { LoginDto, RegisterDto } from './dto/authorization.dto'
+import { LoginDto, RegisterDto } from '../dto/authorization.dto'
+import { VerificationService } from '../verification/verification.service'
 
 @Injectable()
 export class AuthorizationService {
 	constructor(
 		private readonly database: DatabaseService,
-		private readonly jwtService: JwtService
+		private readonly jwtService: JwtService,
+		private readonly verificationService: VerificationService
 	) {}
 
 	async login(dto: LoginDto) {
 		const user = await this.validateUser(dto)
 
+		if (!user.isEmailVerified) {
+			this.verificationService.sendVerificationEmail(user)
+
+			throw new BadRequestException('Аккаунт не верифицирован, проверьте почту')
+		}
+
 		return {
 			user: this.returnUserFields(user),
-			accessToken: await this.issueAccessToken(user.id)
+			accessToken: await issueAccessToken(user.id, this.jwtService)
 		}
 	}
 
-	async register(dto: RegisterDto) {
+	async create(dto: RegisterDto) {
 		const oldUser = await this.database.user.findUnique({
 			where: {
 				email: dto.email
@@ -40,14 +49,19 @@ export class AuthorizationService {
 			data: {
 				name: dto.name,
 				password: await hash(dto.password, salt),
-				email: dto.email,
-				role: dto.role
+				email: dto.email
 			}
 		})
 
+		if (!newUser.isEmailVerified) {
+			this.verificationService.sendVerificationEmail(newUser)
+
+			throw new BadRequestException('Аккаунт не верифицирован, проверьте почту')
+		}
+
 		return {
 			user: this.returnUserFields(newUser),
-			accessToken: await this.issueAccessToken(newUser.id)
+			accessToken: await issueAccessToken(newUser.id, this.jwtService)
 		}
 	}
 
@@ -65,21 +79,11 @@ export class AuthorizationService {
 		return user
 	}
 
-	async issueAccessToken(userId: string) {
-		const data = { id: userId }
-
-		const accessToken = await this.jwtService.signAsync(data, {
-			expiresIn: '31d'
-		})
-
-		return accessToken
-	}
 	returnUserFields(user: User) {
 		return {
 			id: user.id,
 			email: user.email,
-			name: user.name,
-			role: user.role
+			name: user.name
 		}
 	}
 }

@@ -11,18 +11,24 @@ datasource db {
   url      = env("DATABASE_URL")
 }
 
+
 model User {
-  id        String   @id @default(uuid())
-  createdAt DateTime @default(now())
-  email     String   @unique
-  name      String?
+  id        String   @id @default(uuid()) @map("user_id")
+  createdAt DateTime @default(now()) @map("created_at")
+  email     String   @unique 
+  name      String?  
+  
+  isEmailVerified Boolean @default(false) @map("is_email_verified")
 
-  password String
+  tokens Token[]
+
+  password String 
+  
+  @@map("users")
 }
-
 model Banner {
-  id        String   @id @default(uuid())
-  createdAt DateTime @default(now())
+  id        String   @id @default(uuid()) @map("banner_id")
+  createdAt DateTime @default(now()) @map("created_at")
 
   position    Int    @default(1)
   image       String
@@ -34,23 +40,27 @@ model Banner {
   ///[TextWithLangs]
   button      Json
   ///[ImageSide]
-  imageSide   Json
+  imageSide   Json @map("image_side")
+  
+  @@map("banners")
 }
 
 model Category {
-  id        String   @id @default(uuid())
-  createdAt DateTime @default(now())
+  id        String   @id @default(uuid()) @map("category_id")
+  createdAt DateTime @default(now()) @map("created_at")
 
   ///[TextWithLangs]
   title  Json
-  hrefId String
+  hrefId String @map("href_id")
 
   products Product[]
+
+  @@map("categories")
 }
 
 model Product {
-  id        String   @id @default(uuid())
-  createdAt DateTime @default(now())
+  id        String   @id @default(uuid()) @map("product_id")
+  createdAt DateTime @default(now()) @map("created_at")
 
   ///[TextWithLangs]
   name        Json
@@ -60,7 +70,7 @@ model Product {
   price       Json
   image       String
 
-  categoryId String
+  categoryId String @map("category_id")
   category   Category @relation(fields: [categoryId], references: [id])
 
   composition String[]
@@ -68,19 +78,46 @@ model Product {
   volumes     Json
   ///[Nutrition]
   nutrition   Json
+  
+  @@map("products")
 }
 
 model Event {
-  id        String   @id @default(uuid())
-  createdAt DateTime @default(now())
+  id        String   @id @default(uuid()) @map("event_id")
+  createdAt DateTime @default(now()) @map("created_at")
 
   ///[TextWithLangs]
   name         Json
   date         DateTime
   ///[TextWithLangs]
   description  Json
-  imagePreview String
+  imagePreview String @map("image_preview")
   image        String
   ///[EventContent]
   content      Json
+  
+  @@map("events")
+}
+
+model Token {
+  id        String   @id @default(uuid()) @map("token_id")
+  createdAt DateTime @default(now()) @map("created_at")
+  
+  token String @unique
+
+  type TokenType
+  
+  user User? @relation(fields: [userId], references: [id], onDelete: Cascade)
+  userId String? @map("user_id")
+  
+  expiresIn DateTime @map("expires_in")
+  
+  @@map("tokens")
+}
+
+
+enum TokenType {
+  EMAIL_VERIFY
+  
+  @@map("token_types")
 }

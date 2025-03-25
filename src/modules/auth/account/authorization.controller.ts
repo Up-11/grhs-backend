@@ -7,9 +7,10 @@ import {
 	ValidationPipe
 } from '@nestjs/common'
 
+import { AUTHORIZATION_ROUTES } from '../config/authorization.routes'
+import { LoginDto, RegisterDto } from '../dto/authorization.dto'
+
 import { AuthorizationService } from './authorization.service'
-import { AUTHORIZATION_ROUTES } from './config/authorization.routes'
-import { LoginDto, RegisterDto } from './dto/authorization.dto'
 
 @Controller(AUTHORIZATION_ROUTES.INDEX)
 export class AuthorizationController {
@@ -26,6 +27,6 @@ export class AuthorizationController {
 	@HttpCode(200)
 	@Post(AUTHORIZATION_ROUTES.SIGN_UP)
 	async register(@Body() dto: RegisterDto) {
-		return this.authorizationService.register(dto)
+		return this.authorizationService.create(dto)
 	}
 }

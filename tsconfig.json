@@ -17,6 +17,7 @@
 		"strictBindCallApply": false,
 		"forceConsistentCasingInFileNames": false,
 		"noFallthroughCasesInSwitch": false,
-		"typeRoots": ["./prisma/json-index.d.ts"]
+		"typeRoots": ["./prisma/json-index.d.ts"],
+		"jsx": "react"
 	}
 }
