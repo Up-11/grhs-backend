@@ -1,16 +1,27 @@
 [] - products
-    [] - crud 
-  [] - crud 
-  [] - crud 
-  [] - crud 
+  [] - add product 
+  [] - remove product 
+  [] - update product 
+  [] - delete product 
+  
+[] - categories 
+  [] - create  
+  [] - delete  
+  [] - update  
+  [] - add products 
+  [] - remove products from category 
+  [] - swap products 
   
 [] - event 
-  [] - crud 
-[] - main page blocks 
+  [] - create event 
+  [] - delete event 
+  [] - update event
+
+[!] - main page blocks 
   [x] - create block 
   [x] - delete block 
   [] - hide?? block 
-  [] - update position 
+  [x] - update position 
   [x] - update info 
   
 [] - media service

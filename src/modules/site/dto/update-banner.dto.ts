@@ -2,18 +2,15 @@ import { IsNotEmpty, IsObject, IsOptional, IsString } from 'class-validator'
 
 export class UpdateBannerDto {
 	@IsOptional()
-	@IsObject()
 	@IsNotEmpty()
 	@IsObject()
 	title?: PrismaJson.TextWithLangs
 
 	@IsOptional()
-	@IsObject()
 	@IsNotEmpty()
 	@IsObject()
 	description?: PrismaJson.TextWithLangs
 
-	@IsObject()
 	@IsOptional()
 	@IsNotEmpty()
 	@IsObject()

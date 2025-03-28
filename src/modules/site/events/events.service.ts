@@ -1,4 +1,7 @@
-import { Injectable } from '@nestjs/common';
+import { Injectable } from '@nestjs/common'
+import { DatabaseService } from 'src/core/database/database.service'
 
 @Injectable()
-export class EventsService {}
+export class EventsService {
+	public constructor(private readonly database: DatabaseService) {}
+}

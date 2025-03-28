@@ -1,11 +1,11 @@
 import { Injectable } from '@nestjs/common'
 import { DatabaseService } from 'src/core/database/database.service'
 
-import { CreateBannerDto } from './dto/create-banner.dto'
-import { UpdateBannerDto } from './dto/update-banner.dto'
+import { CreateBannerDto } from '../dto/create-banner.dto'
+import { UpdateBannerDto } from '../dto/update-banner.dto'
 
 @Injectable()
-export class SiteService {
+export class BannerService {
 	constructor(private readonly database: DatabaseService) {}
 
 	public async getBanners() {
