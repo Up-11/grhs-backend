@@ -1,11 +1,11 @@
-import { IsNotEmpty, IsObject, IsOptional } from 'class-validator'
+import { IsNotEmpty, IsObject, IsOptional, IsString } from 'class-validator'
 
 export class CreateCategoryDto {
 	@IsObject()
 	@IsNotEmpty()
 	title: PrismaJson.TextWithLangs
 
-	@IsObject()
+	@IsString()
 	@IsNotEmpty()
 	hrefId: string
 }
@@ -15,7 +15,7 @@ export class UpdateCategoryDto {
 	@IsOptional()
 	title?: PrismaJson.TextWithLangs
 
-	@IsObject()
+	@IsString()
 	@IsOptional()
 	hrefId?: string
 }

@@ -1,3 +1,4 @@
+import { Transform } from 'class-transformer'
 import {
 	IsDate,
 	IsNotEmpty,
@@ -17,6 +18,7 @@ export class CreateEventDto {
 
 	@IsDate()
 	@IsNotEmpty()
+	@Transform(({ value }) => new Date(value))
 	date: Date
 
 	@IsNotEmpty()
@@ -26,9 +28,12 @@ export class CreateEventDto {
 	@IsNotEmpty()
 	@IsString()
 	imagePreview: string
+
+	@IsNotEmpty()
+	content: PrismaJson.EventContent
 }
 
-export class EditEventDto {
+export class UpdateEventDto {
 	@IsNotEmpty()
 	@IsObject()
 	@IsOptional()
@@ -42,6 +47,7 @@ export class EditEventDto {
 	@IsOptional()
 	@IsDate()
 	@IsNotEmpty()
+	@Transform(({ value }) => new Date(value))
 	date?: Date
 
 	@IsOptional()
@@ -53,4 +59,7 @@ export class EditEventDto {
 	@IsNotEmpty()
 	@IsString()
 	imagePreview?: string
+
+	@IsOptional()
+	content: PrismaJson.EventContent
 }

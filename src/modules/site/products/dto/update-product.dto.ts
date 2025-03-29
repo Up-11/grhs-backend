@@ -28,8 +28,4 @@ export class UpdateProductDto {
 	@IsArray()
 	@IsOptional()
 	composition?: string[]
-
-	@IsString()
-	@IsOptional()
-	href?: string
 }

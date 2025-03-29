@@ -31,8 +31,4 @@ export class CreateProductDto {
 	@IsNotEmpty()
 	@IsArray()
 	composition: string[]
-
-	@IsNotEmpty()
-	@IsString()
-	href: string
 }

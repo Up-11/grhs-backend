@@ -71,7 +71,7 @@ model Product {
   image       String
 
   categoryId String @map("category_id")
-  category   Category @relation(fields: [categoryId], references: [id])
+  category   Category @relation(fields: [categoryId], references: [id], onDelete: Cascade)
 
   composition String[]
   ///[MinMaxValue]

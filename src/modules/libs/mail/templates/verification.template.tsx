@@ -22,6 +22,7 @@ export function VerificationTemplate({ token }: Props){
             <Heading className='text-3xl font-bold text-black'>Подтверждение вашей почты</Heading>
             <Text className='text-slate-600 text-lg'>Для подтверждения аккаунта введите этот код на сайте</Text>
             <Text className='text-slate-900 font-bold text-4xl text-green-800'>{ token }</Text>
+            <Text className='text-slate-600 text-lg'>Код будет действителен всего 5 минут, так что поторопитесь!</Text>
 
           </Section>
           

@@ -5,6 +5,7 @@ import { join } from 'path'
 import { AuthorizationModule } from 'src/modules/auth/account/authorization.module'
 import { VerificationModule } from 'src/modules/auth/verification/verification.module'
 import { MailModule } from 'src/modules/libs/mail/mail.module'
+import { MediaModule } from 'src/modules/libs/media/media.module'
 import { BannerModule } from 'src/modules/site/banner/banner.module'
 import { EventsModule } from 'src/modules/site/events/events.module'
 import { ProductsModule } from 'src/modules/site/products/products.module'
@@ -26,8 +27,9 @@ import { DatabaseModule } from './database/database.module'
 		VerificationModule,
 		MailModule,
 		BannerModule,
+		EventsModule,
 		ProductsModule,
-		EventsModule
+		MediaModule
 	]
 })
 export class CoreModule {}

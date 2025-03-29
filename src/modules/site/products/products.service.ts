@@ -7,7 +7,7 @@ import { UpdateProductDto } from './dto/update-product.dto'
 
 @Injectable()
 export class ProductsService {
-	public constructor(private readonly database: DatabaseService) {}
+	constructor(private readonly database: DatabaseService) {}
 
 	public async getProducts() {
 		return this.database.product.findMany({
@@ -88,7 +88,7 @@ export class ProductsService {
 		})
 	}
 
-	public ChangeCategory(categoryId: string, productId: string) {
+	public async ChangeCategory(categoryId: string, productId: string) {
 		return this.database.category.update({
 			where: {
 				id: categoryId

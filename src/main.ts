@@ -1,6 +1,8 @@
 import { ValidationPipe } from '@nestjs/common'
 import { ConfigService } from '@nestjs/config'
 import { NestFactory } from '@nestjs/core'
+import * as express from 'express'
+import * as path from 'path'
 
 import { CoreModule } from './core/core.module'
 
@@ -10,8 +12,10 @@ async function bootstrap() {
 
 	const config = app.get(ConfigService)
 
+	const allowedOrigins = config.get<string>('ALLOWED_ORIGIN').split(',') || []
+
 	app.enableCors({
-		origin: '*',
+		origin: allowedOrigins.length ? allowedOrigins : '*',
 		methods: 'GET,HEAD,PUT,PATCH,POST,DELETE',
 		credentials: true
 	})
@@ -22,6 +26,8 @@ async function bootstrap() {
 			whitelist: true
 		})
 	)
+
+	app.use('/uploads', express.static(path.join(__dirname, '..', 'uploads')))
 
 	const port = config.get<number>('APPLICATION_PORT') || 4200
 

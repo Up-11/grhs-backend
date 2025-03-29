@@ -4,18 +4,19 @@ import {
 	Delete,
 	Get,
 	HttpCode,
+	Param,
 	Patch,
 	Post
 } from '@nestjs/common'
 import { Auth } from 'src/shared/decorators/auth.decorator'
 
 import { SITE_ENDPOINTS } from '../config/endpoints'
-import { CreateBannerDto } from '../dto/create-banner.dto'
-import { UpdateBannerDto } from '../dto/update-banner.dto'
 
 import { BannerService } from './banner.service'
+import { CreateBannerDto } from './dto/create-banner.dto'
+import { UpdateBannerDto } from './dto/update-banner.dto'
 
-@Controller(SITE_ENDPOINTS.INDEX)
+@Controller(SITE_ENDPOINTS.BANNER.INDEX)
 export class BannerController {
 	constructor(private readonly bannerService: BannerService) {}
 
@@ -35,27 +36,26 @@ export class BannerController {
 	@Patch(SITE_ENDPOINTS.BANNER.UPDATE_BANNER)
 	@HttpCode(200)
 	@Auth()
-	public async updateBanner(
-		@Body() dto: UpdateBannerDto,
-		@Body() bannerId: string
-	) {
-		return this.bannerService.updateBanner(bannerId, dto)
+	public async updateBanner(@Body() dto: UpdateBannerDto) {
+		return this.bannerService.updateBanner(dto)
 	}
 
 	@Patch(SITE_ENDPOINTS.BANNER.UPDATE_POSITION)
 	@HttpCode(200)
 	@Auth()
 	public async updateBannerPosition(
-		@Body() newPos: number,
-		@Body() bannerId: string
+		@Body() payload: { newPos: number; bannerId: string }
 	) {
-		return this.bannerService.updateBannerPosition(bannerId, newPos)
+		return this.bannerService.updateBannerPosition(
+			payload.bannerId,
+			payload.newPos
+		)
 	}
 
 	@Delete(SITE_ENDPOINTS.BANNER.DELETE_BANNER)
 	@HttpCode(200)
 	@Auth()
-	public async deleteBanner(@Body() bannerId: string) {
+	public async deleteBanner(@Param('id') bannerId: string) {
 		return this.bannerService.deleteBanner(bannerId)
 	}
 }

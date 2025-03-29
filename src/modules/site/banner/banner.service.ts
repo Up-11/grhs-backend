@@ -1,8 +1,8 @@
 import { Injectable } from '@nestjs/common'
 import { DatabaseService } from 'src/core/database/database.service'
 
-import { CreateBannerDto } from '../dto/create-banner.dto'
-import { UpdateBannerDto } from '../dto/update-banner.dto'
+import { CreateBannerDto } from './dto/create-banner.dto'
+import { UpdateBannerDto } from './dto/update-banner.dto'
 
 @Injectable()
 export class BannerService {
@@ -31,8 +31,8 @@ export class BannerService {
 			data: { position: newPosition }
 		})
 	}
-	public async updateBanner(bannerId: string, dto: UpdateBannerDto) {
-		return this.database.banner.update({ where: { id: bannerId }, data: dto })
+	public async updateBanner(dto: UpdateBannerDto) {
+		return this.database.banner.update({ where: { id: dto.id }, data: dto })
 	}
 	public async deleteBanner(bannerId: string) {
 		return this.database.banner.delete({ where: { id: bannerId } })

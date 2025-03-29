@@ -8,6 +8,7 @@ import {
 	Patch,
 	Post
 } from '@nestjs/common'
+import { Auth } from 'src/shared/decorators/auth.decorator'
 
 import { SITE_ENDPOINTS } from '../config/endpoints'
 
@@ -20,7 +21,7 @@ import { ProductsService } from './products.service'
 export class ProductsController {
 	constructor(private readonly productsService: ProductsService) {}
 
-	@Get(SITE_ENDPOINTS.PRODUCTS.INDEX)
+	@Get()
 	@HttpCode(200)
 	getAll() {
 		return this.productsService.getProducts()
@@ -34,52 +35,58 @@ export class ProductsController {
 
 	@Post(SITE_ENDPOINTS.PRODUCTS.CREATE_PRODUCT)
 	@HttpCode(200)
+	@Auth()
 	createProduct(@Body() dto: CreateProductDto) {
 		return this.productsService.createProduct(dto)
 	}
 
 	@Post(SITE_ENDPOINTS.CATEGORIES.CREATE_CATEGORY)
 	@HttpCode(200)
+	@Auth()
 	createCategory(@Body() dto: CreateCategoryDto) {
 		return this.productsService.createCategory(dto)
 	}
-
-	@Post(SITE_ENDPOINTS.CATEGORIES.CREATE_CATEGORY)
+	/* 
+	@Post(SITE_ENDPOINTS.CATEGORIES.UPDATE_CATEGORY)
 	@HttpCode(200)
+	@Auth()
 	changeCategory(
 		@Param('categoryId') categoryId: string,
 		@Param('productId') productId: string
 	) {
 		return this.productsService.ChangeCategory(categoryId, productId)
 	}
-
+ */
 	@Patch(SITE_ENDPOINTS.PRODUCTS.UPDATE_PRODUCT)
 	@HttpCode(200)
-	updateProduct(
-		@Param('productId') productId: string,
-		@Body() dto: UpdateProductDto
-	) {
+	@Auth()
+	updateProduct(@Param('id') productId: string, @Body() dto: UpdateProductDto) {
 		return this.productsService.updateProduct(productId, dto)
 	}
 
 	@Patch(SITE_ENDPOINTS.CATEGORIES.UPDATE_CATEGORY)
 	@HttpCode(200)
+	@Auth()
 	updateCategory(
 		@Body() dto: UpdateCategoryDto,
-		@Param('categoryId') categoryId: string
+		@Param('id') categoryId: string
 	) {
 		return this.productsService.updateCategory(dto, categoryId)
 	}
 
 	@Delete(SITE_ENDPOINTS.PRODUCTS.DELETE_PRODUCT)
 	@HttpCode(200)
-	deleteProduct(@Param('productId') productId: string) {
+	@Auth()
+	deleteProduct(@Param('id') productId: string) {
+		console.log(productId)
+
 		return this.productsService.deleteProductById(productId)
 	}
 
-	@Delete(SITE_ENDPOINTS.CATEGORIES.INDEX)
+	@Delete(SITE_ENDPOINTS.CATEGORIES.DELETE_CATEGORY)
 	@HttpCode(200)
-	deleteCategory(@Param('categoryId') categoryId: string) {
+	@Auth()
+	deleteCategory(@Param('id') categoryId: string) {
 		return this.productsService.deleteCategoryById(categoryId)
 	}
 }
