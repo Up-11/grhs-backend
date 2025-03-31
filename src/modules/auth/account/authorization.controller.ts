@@ -1,14 +1,18 @@
 import {
 	Body,
 	Controller,
+	Get,
 	HttpCode,
+	Param,
+	Patch,
 	Post,
 	UsePipes,
 	ValidationPipe
 } from '@nestjs/common'
+import { Auth } from 'src/shared/decorators/auth.decorator'
 
 import { AUTHORIZATION_ROUTES } from '../config/authorization.routes'
-import { LoginDto, RegisterDto } from '../dto/authorization.dto'
+import { EditProfileDto, LoginDto, RegisterDto } from '../dto/authorization.dto'
 
 import { AuthorizationService } from './authorization.service'
 
@@ -16,7 +20,6 @@ import { AuthorizationService } from './authorization.service'
 export class AuthorizationController {
 	constructor(private readonly authorizationService: AuthorizationService) {}
 
-	@UsePipes(new ValidationPipe())
 	@HttpCode(200)
 	@Post(AUTHORIZATION_ROUTES.SIGN_IN)
 	async login(@Body() dto: LoginDto) {
@@ -28,5 +31,18 @@ export class AuthorizationController {
 	@Post(AUTHORIZATION_ROUTES.SIGN_UP)
 	async register(@Body() dto: RegisterDto) {
 		return this.authorizationService.create(dto)
+	}
+
+	@HttpCode(200)
+	@Get()
+	async getAll() {
+		return this.authorizationService.getAllUsers()
+	}
+
+	@UsePipes(new ValidationPipe())
+	@HttpCode(200)
+	@Patch(AUTHORIZATION_ROUTES.EDIT)
+	async editProfile(@Body() dto: EditProfileDto, @Param('id') userId: string) {
+		return this.authorizationService.editProfile(dto, userId)
 	}
 }

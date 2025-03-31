@@ -9,8 +9,10 @@ import { compare, genSalt, hash } from 'bcryptjs'
 import { DatabaseService } from 'src/core/database/database.service'
 import { issueAccessToken } from 'src/shared/utils/issue-access-token.util'
 
-import { LoginDto, RegisterDto } from '../dto/authorization.dto'
+import { EditProfileDto, LoginDto, RegisterDto } from '../dto/authorization.dto'
 import { VerificationService } from '../verification/verification.service'
+
+import { ILoginResponse } from './auth.types'
 
 @Injectable()
 export class AuthorizationService {
@@ -20,19 +22,57 @@ export class AuthorizationService {
 		private readonly verificationService: VerificationService
 	) {}
 
-	async login(dto: LoginDto) {
+	async login(dto: LoginDto): Promise<ILoginResponse> {
 		const user = await this.validateUser(dto)
 
 		if (!user.isEmailVerified) {
 			this.verificationService.sendVerificationEmail(user)
 
-			throw new BadRequestException('Аккаунт не верифицирован, проверьте почту')
+			return {
+				emailData: {
+					message: 'Аккаунт не верифицирован, проверьте почту',
+					success: true
+				},
+				authData: undefined
+			}
 		}
 
 		return {
-			user: this.returnUserFields(user),
-			accessToken: await issueAccessToken(user.id, this.jwtService)
+			authData: {
+				user: this.returnUserFields(user),
+				accessToken: await issueAccessToken(user.id, this.jwtService)
+			},
+			emailData: undefined
 		}
+	}
+
+	async getAllUsers() {
+		return this.database.user.findMany({
+			omit: {
+				password: true
+			}
+		})
+	}
+
+	async editProfile(dto: EditProfileDto, userId: string) {
+		const userWithSameEmail = await this.database.user.findUnique({
+			where: {
+				email: dto.email
+			}
+		})
+
+		if (userWithSameEmail && userWithSameEmail.id !== userId) {
+			throw new BadRequestException('Почта занята')
+		}
+
+		return this.database.user.update({
+			where: {
+				id: userId
+			},
+			data: {
+				...dto
+			}
+		})
 	}
 
 	async create(dto: RegisterDto) {
@@ -47,21 +87,12 @@ export class AuthorizationService {
 
 		const newUser = await this.database.user.create({
 			data: {
-				name: dto.name,
 				password: await hash(dto.password, salt),
 				email: dto.email
 			}
 		})
-
-		if (!newUser.isEmailVerified) {
-			this.verificationService.sendVerificationEmail(newUser)
-
-			throw new BadRequestException('Аккаунт не верифицирован, проверьте почту')
-		}
-
 		return {
-			user: this.returnUserFields(newUser),
-			accessToken: await issueAccessToken(newUser.id, this.jwtService)
+			user: this.returnUserFields(newUser)
 		}
 	}
 
@@ -82,8 +113,7 @@ export class AuthorizationService {
 	returnUserFields(user: User) {
 		return {
 			id: user.id,
-			email: user.email,
-			name: user.name
+			email: user.email
 		}
 	}
 }

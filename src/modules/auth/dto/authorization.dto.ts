@@ -1,35 +1,36 @@
-import { IsEmail, IsString, MinLength } from 'class-validator'
+import { IsEmail, IsOptional, IsString, MinLength } from 'class-validator'
 
 export class RegisterDto {
 	@IsEmail()
 	email: string
 
 	@MinLength(8, {
-		message: 'Пароль должен быть не меньше 4 символов'
+		message: 'Пароль должен быть не меньше 8 символов'
 	})
 	@IsString()
 	password: string
-
-	@IsString()
-	@MinLength(2, {
-		message: 'Имя должно быть не меньше 2 символов'
-	})
-	name: string
 }
 
 export class LoginDto {
 	@IsEmail()
 	email: string
 
-	@MinLength(4, {
-		message: 'Пароль должен быть не меньше 4 символов'
+	@MinLength(8, {
+		message: 'Пароль должен быть не меньше 8 символов'
 	})
 	@IsString()
 	password: string
+}
 
-	@IsString()
-	@MinLength(3, {
-		message: 'Имя должно быть не меньше 3 символов'
+export class EditProfileDto {
+	@IsEmail()
+	@IsOptional()
+	email: string
+
+	@MinLength(8, {
+		message: 'Пароль должен быть не меньше 8 символов'
 	})
-	name: string
+	@IsString()
+	@IsOptional()
+	password: string
 }
