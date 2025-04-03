@@ -5,19 +5,19 @@ RUN apk add --no-cache
 
 WORKDIR /app
 
-COPY package.json yarn.lock ./
+COPY package.json package-lock.json ./
 
-RUN yarn install --frozen-lockfile
+RUN npm install --frozen-lockfile
 
 FROM base AS build
 
 COPY . .
 
-RUN yarn prisma generate 
+RUN npx prisma generate 
 
 RUN ls -la node_modules/@prisma
 
-RUN yarn build
+RUN npm build
 
 FROM base AS production
 
@@ -27,7 +27,7 @@ WORKDIR /app
 
 COPY --from=build /app/package.json /app/yarn.lock ./
 
-RUN yarn install --production 
+RUN npm install --production 
 
 COPY --from=build /app/dist ./dist
 
