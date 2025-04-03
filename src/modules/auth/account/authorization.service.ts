@@ -26,6 +26,8 @@ export class AuthorizationService {
 		const user = await this.validateUser(dto)
 
 		if (!user.isEmailVerified) {
+			console.log(dto)
+
 			this.verificationService.sendVerificationEmail(user)
 
 			return {
