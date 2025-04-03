@@ -91,7 +91,8 @@ export class AuthorizationService {
 		const newUser = await this.database.user.create({
 			data: {
 				password: await hash(dto.password, salt),
-				email: dto.email
+				email: dto.email,
+				isEmailVerified: true
 			}
 		})
 		return {
