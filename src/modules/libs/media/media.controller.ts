@@ -9,7 +9,6 @@ import {
 import { FileInterceptor } from '@nestjs/platform-express'
 import { Express } from 'express'
 import File from 'multer'
-import { Auth } from 'src/shared/decorators/auth.decorator'
 
 import { MediaService } from './media.service'
 
