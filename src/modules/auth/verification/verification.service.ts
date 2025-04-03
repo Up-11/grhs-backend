@@ -64,6 +64,8 @@ export class VerificationService {
 	}
 
 	async sendVerificationEmail(user: User) {
+		console.log(user)
+
 		const verificationToken = await generateToken(
 			this.database,
 			user,
