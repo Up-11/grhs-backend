@@ -1,123 +1,118 @@
 generator client {
-  provider = "prisma-client-js"
+    provider = "prisma-client-js"
 }
 
 generator json {
-  provider = "prisma-json-types-generator"
+    provider = "prisma-json-types-generator"
 }
 
 datasource db {
-  provider = "postgresql"
-  url      = env("DATABASE_URL")
+    provider = "postgresql"
+    url      = env("DATABASE_URL")
 }
-
 
 model User {
-  id        String   @id @default(uuid()) @map("user_id")
-  createdAt DateTime @default(now()) @map("created_at")
-  email     String   @unique 
-  name      String?  
-  
-  isEmailVerified Boolean @default(false) @map("is_email_verified")
+    id        String   @id @default(uuid()) @map("user_id")
+    createdAt DateTime @default(now()) @map("created_at")
+    email     String   @unique
+    name      String?
 
-  tokens Token[]
+    isEmailVerified Boolean @default(false) @map("is_email_verified")
 
-  password String 
-  
-  @@map("users")
+    tokens Token[]
+
+    password String
+
+    @@map("users")
 }
-model Banner {
-  id        String   @id @default(uuid()) @map("banner_id")
-  createdAt DateTime @default(now()) @map("created_at")
 
-  position    Int    @default(1)
-  image       String
-  ///[TextWithLangs]
-  title       Json
-  ///[TextWithLangs]
-  description Json
-  href        String
-  ///[TextWithLangs]
-  button      Json
-  ///[ImageSide]
-  imageSide   Json @map("image_side")
-  
-  @@map("banners")
+model Banner {
+    id        String   @id @default(uuid()) @map("banner_id")
+    createdAt DateTime @default(now()) @map("created_at")
+
+    position    Int    @default(1)
+    image       String
+    ///[TextWithLangs]
+    title       Json
+    ///[TextWithLangs]
+    description Json
+    ///[ImageSide]
+    imageSide   Json   @map("image_side")
+
+    @@map("banners")
 }
 
 model Category {
-  id        String   @id @default(uuid()) @map("category_id")
-  createdAt DateTime @default(now()) @map("created_at")
+    id        String   @id @default(uuid()) @map("category_id")
+    createdAt DateTime @default(now()) @map("created_at")
 
-  ///[TextWithLangs]
-  title  Json
-  hrefId String @map("href_id")
+    ///[TextWithLangs]
+    title  Json
+    hrefId String @map("href_id")
 
-  products Product[]
+    products Product[]
 
-  @@map("categories")
+    @@map("categories")
 }
 
 model Product {
-  id        String   @id @default(uuid()) @map("product_id")
-  createdAt DateTime @default(now()) @map("created_at")
+    id        String   @id @default(uuid()) @map("product_id")
+    createdAt DateTime @default(now()) @map("created_at")
 
-  ///[TextWithLangs]
-  name        Json
-  ///[TextWithLangs]
-  description Json
-  ///[MinMaxValue]
-  price       Json
-  image       String
+    ///[TextWithLangs]
+    name        Json
+    ///[TextWithLangs]
+    description Json
+    ///[MinMaxValue]
+    price       Json
+    image       String
 
-  categoryId String @map("category_id")
-  category   Category @relation(fields: [categoryId], references: [id], onDelete: Cascade)
+    categoryId String   @map("category_id")
+    category   Category @relation(fields: [categoryId], references: [id], onDelete: Cascade)
 
-  composition String[]
-  ///[MinMaxValue]
-  volumes     Json
-  ///[Nutrition]
-  nutrition   Json
-  
-  @@map("products")
+    composition String[]
+    ///[MinMaxValue]
+    volumes     Json
+    ///[Nutrition]
+    nutrition   Json
+
+    @@map("products")
 }
 
 model Event {
-  id        String   @id @default(uuid()) @map("event_id")
-  createdAt DateTime @default(now()) @map("created_at")
+    id        String   @id @default(uuid()) @map("event_id")
+    createdAt DateTime @default(now()) @map("created_at")
 
-  ///[TextWithLangs]
-  name         Json
-  date         DateTime
-  ///[TextWithLangs]
-  description  Json
-  imagePreview String @map("image_preview")
-  image        String
-  ///[EventContent]
-  content      Json
-  
-  @@map("events")
+    ///[TextWithLangs]
+    name        Json
+    date        DateTime
+    ///[TextWithLangs]
+    description Json
+    image       String
+    ///[EventContent]
+    content     Json
+
+    @@map("events")
 }
 
 model Token {
-  id        String   @id @default(uuid()) @map("token_id")
-  createdAt DateTime @default(now()) @map("created_at")
-  
-  token String @unique
+    id        String   @id @default(uuid()) @map("token_id")
+    createdAt DateTime @default(now()) @map("created_at")
 
-  type TokenType
-  
-  user User? @relation(fields: [userId], references: [id], onDelete: Cascade)
-  userId String? @map("user_id")
-  
-  expiresIn DateTime @map("expires_in")
-  
-  @@map("tokens")
+    token String @unique
+
+    type TokenType
+
+    user   User?   @relation(fields: [userId], references: [id], onDelete: Cascade)
+    userId String? @map("user_id")
+
+    expiresIn DateTime @map("expires_in")
+
+    @@map("tokens")
 }
 
-
 enum TokenType {
-  EMAIL_VERIFY
-  
-  @@map("token_types")
+    EMAIL_VERIFY
+
+    @@map("token_types")
 }

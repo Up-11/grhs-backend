@@ -9,9 +9,6 @@ export class CreateBannerDto {
 	@IsNotEmpty()
 	description: PrismaJson.TextWithLangs
 
-	@IsObject()
-	@IsNotEmpty()
-	button: PrismaJson.TextWithLangs
 
 	@IsNotEmpty()
 	@IsString()
@@ -21,7 +18,4 @@ export class CreateBannerDto {
 	@IsString()
 	imageSide: PrismaJson.ImageSide
 
-	@IsNotEmpty()
-	@IsString()
-	href: string
 }

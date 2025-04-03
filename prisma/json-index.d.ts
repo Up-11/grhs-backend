@@ -2,7 +2,7 @@ declare global {
 	namespace PrismaJson {
 		type ImageSide = 'left' | 'right'
 
-		type EventContent = Record<string, string>
+		type EventContent = Record<string, TextWithLangs>
 
 		type TextWithLangs = {
 			ru: string

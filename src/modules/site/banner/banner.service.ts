@@ -9,7 +9,11 @@ export class BannerService {
 	constructor(private readonly database: DatabaseService) {}
 
 	public async getBanners() {
-		return this.database.banner.findMany()
+		return this.database.banner.findMany({
+			orderBy: {
+				position: 'asc'
+			}
+		})
 	}
 	public async createBanner(dto: CreateBannerDto) {
 		const lastBanner = await this.database.banner.findFirst({
@@ -24,11 +28,53 @@ export class BannerService {
 			}
 		})
 	}
-
 	public async updateBannerPosition(bannerId: string, newPosition: number) {
-		return this.database.banner.update({
-			where: { id: bannerId },
-			data: { position: newPosition }
+		return this.database.$transaction(async tx => {
+			const currentBanner = await tx.banner.findUnique({
+				where: { id: bannerId }
+			})
+
+			if (!currentBanner) {
+				throw new Error('Banner not found')
+			}
+
+			const oldPosition = currentBanner.position
+
+			if (oldPosition === newPosition) {
+				return currentBanner.position
+			}
+
+			if (newPosition < oldPosition) {
+				await tx.banner.updateMany({
+					where: {
+						position: {
+							gte: newPosition,
+							lt: oldPosition
+						}
+					},
+					data: {
+						position: { increment: 1 }
+					}
+				})
+			} else {
+				await tx.banner.updateMany({
+					where: {
+						position: {
+							gt: oldPosition,
+							lte: newPosition
+						}
+					},
+					data: {
+						position: { decrement: 1 }
+					}
+				})
+			}
+
+			await tx.banner.update({
+				where: { id: bannerId },
+				data: { position: newPosition }
+			})
+			return newPosition
 		})
 	}
 	public async updateBanner(dto: UpdateBannerDto) {

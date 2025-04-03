@@ -23,11 +23,6 @@ export class UpdateBannerDto {
 
 	@IsOptional()
 	@IsNotEmpty()
-	@IsObject()
-	button?: PrismaJson.TextWithLangs
-
-	@IsOptional()
-	@IsNotEmpty()
 	@IsString()
 	image?: string
 
@@ -35,9 +30,4 @@ export class UpdateBannerDto {
 	@IsNotEmpty()
 	@IsString()
 	imageSide?: PrismaJson.ImageSide
-
-	@IsOptional()
-	@IsNotEmpty()
-	@IsString()
-	href?: string
 }

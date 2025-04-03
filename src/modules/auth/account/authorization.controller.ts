@@ -1,6 +1,7 @@
 import {
 	Body,
 	Controller,
+	Delete,
 	Get,
 	HttpCode,
 	Param,
@@ -28,15 +29,24 @@ export class AuthorizationController {
 
 	@UsePipes(new ValidationPipe())
 	@HttpCode(200)
+	@Auth()
 	@Post(AUTHORIZATION_ROUTES.SIGN_UP)
 	async register(@Body() dto: RegisterDto) {
 		return this.authorizationService.create(dto)
 	}
 
 	@HttpCode(200)
+	@Auth()
 	@Get()
 	async getAll() {
 		return this.authorizationService.getAllUsers()
+	}
+
+	@Auth()
+	@HttpCode(200)
+	@Delete('/delete/:id')
+	async deleteById(@Param('id') userId: string) {
+		return this.authorizationService.removeById(userId)
 	}
 
 	@UsePipes(new ValidationPipe())

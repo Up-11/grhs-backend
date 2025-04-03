@@ -26,10 +26,6 @@ export class CreateEventDto {
 	image: string
 
 	@IsNotEmpty()
-	@IsString()
-	imagePreview: string
-
-	@IsNotEmpty()
 	content: PrismaJson.EventContent
 }
 

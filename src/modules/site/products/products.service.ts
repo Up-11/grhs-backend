@@ -57,7 +57,14 @@ export class ProductsService {
 	}
 
 	public async getCategories() {
-		return this.database.category.findMany()
+		return this.database.category.findMany({
+			include: {
+				products: true
+			},
+			orderBy: {
+				id: 'asc'
+			}
+		})
 	}
 
 	public async deleteCategoryById(categoryId: string) {

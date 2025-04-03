@@ -55,14 +55,15 @@ export class AuthorizationService {
 	}
 
 	async editProfile(dto: EditProfileDto, userId: string) {
-		const userWithSameEmail = await this.database.user.findUnique({
-			where: {
-				email: dto.email
+		if (dto.email) {
+			const userWithSameEmail = await this.database.user.findUnique({
+				where: {
+					email: dto.email
+				}
+			})
+			if (userWithSameEmail && userWithSameEmail.id !== userId) {
+				throw new BadRequestException('Почта занята')
 			}
-		})
-
-		if (userWithSameEmail && userWithSameEmail.id !== userId) {
-			throw new BadRequestException('Почта занята')
 		}
 
 		return this.database.user.update({
@@ -94,6 +95,13 @@ export class AuthorizationService {
 		return {
 			user: this.returnUserFields(newUser)
 		}
+	}
+	async removeById(userId: string) {
+		return this.database.user.delete({
+			where: {
+				id: userId
+			}
+		})
 	}
 
 	async validateUser(dto: LoginDto): Promise<User> {

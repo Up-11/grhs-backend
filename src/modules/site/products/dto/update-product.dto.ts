@@ -21,6 +21,10 @@ export class UpdateProductDto {
 	@IsOptional()
 	nutrition: PrismaJson.Nutrition
 
+	@IsOptional()
+	@IsString()
+	categoryId: string
+
 	@IsString()
 	@IsOptional()
 	image?: string
