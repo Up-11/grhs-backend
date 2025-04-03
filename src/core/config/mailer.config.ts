@@ -14,6 +14,10 @@ export function getMailerConfig(configService: ConfigService): MailerOptions {
 			logger: true,
 			debug: true
 		},
+		tls: {
+			rejectUnauthorized: false
+		},
+		connectionTimeout: 30000,
 		defaults: {
 			from: `"Green House Support" <${configService.getOrThrow<string>('MAIL_LOGIN')}>`
 		}
