@@ -25,7 +25,7 @@ ENV NODE_ENV=production
 
 WORKDIR /app
 
-COPY --from=build /app/package.json /app/yarn.lock ./
+COPY --from=build /app/package.json /app/package-lock.json ./
 
 RUN npm install --production 
 
