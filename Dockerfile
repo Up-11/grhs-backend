@@ -7,7 +7,7 @@ WORKDIR /app
 
 COPY package.json yarn.lock ./
 
-RUN npm install --frozen-lockfile
+RUN yarn install --frozen-lockfile
 
 FROM base AS build
 
