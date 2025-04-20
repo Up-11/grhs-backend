@@ -26,6 +26,8 @@ export class AuthorizationService {
 		const user = await this.validateUser(dto)
 
 		if (!user.isEmailVerified) {
+			console.log(dto)
+
 			this.verificationService.sendVerificationEmail(user)
 
 			return {
@@ -89,7 +91,8 @@ export class AuthorizationService {
 		const newUser = await this.database.user.create({
 			data: {
 				password: await hash(dto.password, salt),
-				email: dto.email
+				email: dto.email,
+				isEmailVerified: true
 			}
 		})
 		return {
