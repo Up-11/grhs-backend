@@ -9,6 +9,11 @@ declare global {
 			en: string
 		}
 
+		type TwoLangArray = {
+			ru: string[]
+			en: string[]
+		}
+
 		type MinMaxValue = {
 			value: number
 			max: number

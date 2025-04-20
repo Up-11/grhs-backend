@@ -1,4 +1,4 @@
-import { IsArray, IsObject, IsOptional, IsString } from 'class-validator'
+import { IsObject, IsOptional, IsString } from 'class-validator'
 
 export class UpdateProductDto {
 	@IsObject()
@@ -29,7 +29,7 @@ export class UpdateProductDto {
 	@IsOptional()
 	image?: string
 
-	@IsArray()
+	@IsObject()
 	@IsOptional()
-	composition?: string[]
+	composition?: PrismaJson.TextWithLangs
 }

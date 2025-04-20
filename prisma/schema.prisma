@@ -70,7 +70,8 @@ model Product {
     categoryId String   @map("category_id")
     category   Category @relation(fields: [categoryId], references: [id], onDelete: Cascade)
 
-    composition String[]
+    ///[TextWithLangs]
+    composition Json
     ///[MinMaxValue]
     volumes     Json
     ///[Nutrition]
