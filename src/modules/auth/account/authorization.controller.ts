@@ -29,7 +29,6 @@ export class AuthorizationController {
 
 	@UsePipes(new ValidationPipe())
 	@HttpCode(200)
-	@Auth()
 	@Post(AUTHORIZATION_ROUTES.SIGN_UP)
 	async register(@Body() dto: RegisterDto) {
 		return this.authorizationService.create(dto)

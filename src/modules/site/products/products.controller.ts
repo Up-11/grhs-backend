@@ -46,17 +46,7 @@ export class ProductsController {
 	createCategory(@Body() dto: CreateCategoryDto) {
 		return this.productsService.createCategory(dto)
 	}
-	/* 
-	@Post(SITE_ENDPOINTS.CATEGORIES.UPDATE_CATEGORY)
-	@HttpCode(200)
-	@Auth()
-	changeCategory(
-		@Param('categoryId') categoryId: string,
-		@Param('productId') productId: string
-	) {
-		return this.productsService.ChangeCategory(categoryId, productId)
-	}
- */
+
 	@Patch(SITE_ENDPOINTS.PRODUCTS.UPDATE_PRODUCT)
 	@HttpCode(200)
 	@Auth()
